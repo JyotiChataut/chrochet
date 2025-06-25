@@ -1,11 +1,23 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const feedbackSchema = new mongoose.Schema(
+const { Schema, model } = mongoose;
+
+const feedbackSchema = new Schema(
   {
-    message: { type: String, required: true },
-    fileName: { type: String, default: null },
+    message: {
+      type: String,
+      required: true,
+    },
+    fileName: {
+      type: String,
+      default: null,
+    },
   },
-  { timestamps: true } // this enables createdAt & updatedAt
+  {
+    timestamps: true, // adds createdAt and updatedAt
+  }
 );
 
-module.exports = mongoose.model('Feedback', feedbackSchema);
+const Feedback = model('Feedback', feedbackSchema);
+
+export default Feedback;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { create, find } from '../models/Feedback';
+import Feedback from '../models/Feedback.js';
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const feedback = await create({
+    const feedback = await Feedback.create({
       message,
       fileName: fileName || null,
     });
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 // 📥 ADMIN: GET ALL FEEDBACKS
 router.get('/', async (_req, res) => {
   try {
-    const allFeedbacks = await find().sort({ createdAt: -1 });
+    const allFeedbacks = await Feedback.find().sort({ createdAt: -1 });
     res.status(200).json(allFeedbacks);
   } catch (err) {
     console.error('❌ Error fetching feedbacks:', err);

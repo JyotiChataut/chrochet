@@ -1,8 +1,8 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const Feedback = require('../models/Feedback');
+import { Router } from 'express';
+import jwt from 'jsonwebtoken';
+import Feedback from '../models/Feedback.js';
 
-const router = express.Router();
+const router = Router();
 
 // 🔐 Middleware to verify JWT token
 function auth(req, res, next) {
@@ -29,4 +29,4 @@ router.get('/feedbacks', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

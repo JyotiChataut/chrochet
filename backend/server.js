@@ -1,22 +1,28 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-dotenv.config(); // Load variables from .env
+// Load env variables
+dotenv.config();
+
+// Import routes using ES modules
+import authRoutes from './routes/auth.js';
+import feedbackRoutes from './routes/feedback.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));        // For admin login
-app.use('/api/feedbacks', require('./routes/feedback').default); // Public feedback form
-app.use('/api/admin', require('./routes/admin'));       // Protected admin route
+app.use('/api/auth', authRoutes);              // For admin login
+app.use('/api/feedbacks', feedbackRoutes);     // Public feedback form
+app.use('/api/admin', adminRoutes);            // Protected admin route
 
-// Connect to MongoDB and start server
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');

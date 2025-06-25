@@ -1,9 +1,9 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import { Router } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-const router = express.Router();
+const router = Router();
 
 // ✅ ONE-TIME ADMIN SETUP (run only once, then disable)
 router.post('/create-admin', async (req, res) => {
@@ -26,7 +26,6 @@ router.post('/create-admin', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  // 🔐 Check against secure email in .env
   if (email !== process.env.ADMIN_EMAIL) {
     return res.status(403).json({ msg: 'Unauthorized email' });
   }
@@ -38,7 +37,12 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
     res.json({ token });
   } catch (err) {
     console.error('Login error:', err);
@@ -46,4 +50,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
