@@ -11,7 +11,7 @@ export default function Contact() {
        <label>
         <form>
            <div>
-          <label className="block text-sm font-medium mb-1" htmlFor="name">Name</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="name">Namee</label>
           <input
             id="name"
             name="name"
