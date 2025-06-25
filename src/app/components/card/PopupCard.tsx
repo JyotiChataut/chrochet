@@ -38,46 +38,50 @@ export default function PopupCard({ visible, setVisible }: Props) {
     setTimeout(() => setToastType(''), 2000);
   };
 
-  const handleFeedbackSubmit = () => {
-    const normalized = feedback
-      .toLowerCase()
-      .replace(/[^a-zA-Z0-9\s]/g, '')
-      .replace(/\s+/g, ' ');
+const handleFeedbackSubmit = async () => {
+  const normalized = feedback
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .replace(/\s+/g, ' ');
 
-    const isBlocked = blockedPatterns.some((pattern) => pattern.test(normalized));
+  const isBlocked = blockedPatterns.some((pattern) => pattern.test(normalized));
 
-    if (isBlocked) {
-      showToast('That message includes words not allowed 🙅‍♀️', 'error');
-      return;
+  if (isBlocked) {
+    showToast('That message includes words not allowed 🙅‍♀️', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/api/feedbacks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: feedback, fileName }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.msg || 'Failed');
     }
 
     showToast('Thanks for your kind input! 🌼', 'success');
-
-    // Clear text input and file input
     setFeedback('');
     setFileName(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
-  };
+  } catch (err) {
+    console.error('❌ Feedback POST error:', err);
+    showToast('Server error. Please try again ❌', 'error');
+  }
+};
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
 
-    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'text/plain', 'application/msword'];
-    const maxSize = 5 * 1024 * 1024;
-
-    if (!allowedTypes.includes(file.type)) {
-      showToast('Unsupported file type ❌', 'error');
-      return;
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      setFileName(file.name);
+    } else {
+      setFileName(null);
     }
-
-    if (file.size > maxSize) {
-      showToast('File too large (max 5MB)', 'error');
-      return;
-    }
-
-    setFileName(file.name);
-  };
+  }
 
   return (
     <AnimatePresence>
