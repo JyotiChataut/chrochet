@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
@@ -14,10 +14,10 @@ const feedbackSchema = new Schema(
     },
   },
   {
-    timestamps: true, // adds createdAt and updatedAt
-  }
+    timestamps: true,
+  },
 );
 
-const Feedback = model('Feedback', feedbackSchema);
+const Feedback = model("Feedback", feedbackSchema);
 
 export default Feedback;

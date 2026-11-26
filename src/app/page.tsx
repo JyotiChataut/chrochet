@@ -60,7 +60,6 @@ export default function Home() {
       <Header />
 
       <main className="flex-grow">
-        {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" aria-hidden="true">
             {images.map((src, i) => (
@@ -90,7 +89,6 @@ export default function Home() {
           </button>
         </section>
 
-        {/* Reels */}
         <section className="px-6 py-16">
           <h2 className="font-caveat text-4xl font-bold text-cyan-50 text-center mb-8">
             Crochet reels

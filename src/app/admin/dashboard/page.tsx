@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/api';
 
 type Feedback = {
   _id: string;
@@ -27,8 +28,8 @@ export default function AdminDashboard() {
 
     const fetchFeedbacks = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/feedbacks', {
-          // headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch(`${API_URL}/api/admin/feedbacks`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!res.ok) {
@@ -38,7 +39,7 @@ export default function AdminDashboard() {
         }
 
         const data = await res.json();
-        setFeedbacks(data.feedbacks || data);
+        setFeedbacks(data.feedbacks);
         setLoading(false);
       } catch {
         setError('Something went wrong');

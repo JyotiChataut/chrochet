@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { API_URL } from '@/lib/api';
 
 type Props = {
   visible: boolean;
@@ -41,7 +42,6 @@ export default function PopupCard({ visible, setVisible }: Props) {
     toastTimer.current = setTimeout(() => setToastType(''), 2500);
   };
 
-  // Dialog behaviour: focus, Escape, focus trap, scroll lock, restore focus.
   useEffect(() => {
     if (!visible) return;
 
@@ -107,7 +107,7 @@ export default function PopupCard({ visible, setVisible }: Props) {
 
     setSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/feedbacks', {
+      const res = await fetch(`${API_URL}/api/feedbacks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: feedback }),
@@ -135,7 +135,6 @@ export default function PopupCard({ visible, setVisible }: Props) {
           className="fixed top-0 left-0 w-full h-full z-30 flex items-center justify-center px-4 backdrop-blur-sm bg-cyan-950/30"
           onClick={() => setVisible(false)}
         >
-          {/* Toast */}
           <AnimatePresence>
             {toastType && (
               <motion.div
@@ -154,7 +153,6 @@ export default function PopupCard({ visible, setVisible }: Props) {
             )}
           </AnimatePresence>
 
-          {/* Dialog panel */}
           <motion.div
             key="popup"
             ref={panelRef}

@@ -1,16 +1,8 @@
 @import "tailwindcss";
 
-/*
- * Jyoti Loops design tokens.
- * One cyan surface world (the header, hero scrim, and footer are cyan-950)
- * with a single rose accent for the feedback moment. Two typefaces: Geist
- * for body and UI, Caveat for the wordmark and public headings (handmade,
- * matches the crochet subject).
- */
-
 :root {
   --background: #ffffff;
-  --foreground: #0f172a; /* slate-900, passes AA on white */
+  --foreground: #0f172a;
 }
 
 @theme inline {
@@ -20,14 +12,12 @@
   --font-caveat: var(--font-caveat);
 }
 
-/* Base */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Controls feel like controls. Tailwind v4 preflight no longer forces this. */
 button,
 [role="button"],
 a[href],
@@ -46,20 +36,17 @@ textarea:disabled {
   cursor: not-allowed;
 }
 
-/* Keyboard-only focus ring in the brand hue. */
 :focus-visible {
-  outline: 2px solid #22d3ee; /* cyan-400 */
+  outline: 2px solid #22d3ee;
   outline-offset: 2px;
   border-radius: 2px;
 }
 
-/* Browser surfaces carry the design too. */
 ::selection {
-  background: #a5f3fc; /* cyan-200 */
-  color: #083344; /* cyan-950 */
+  background: #a5f3fc;
+  color: #083344;
 }
 
-/* Motion honours the visitor's preference. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
