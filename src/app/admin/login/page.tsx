@@ -7,9 +7,13 @@ export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError('');
     try {
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -28,39 +32,65 @@ export default function AdminLogin() {
       router.push('/admin/dashboard');
     } catch {
       setError('Something went wrong');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cyan-50">
-      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-bold mb-4 text-center">Admin Login</h2>
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+    <main className="min-h-screen flex items-center justify-center bg-cyan-50 px-4">
+      <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm">
+        <h1 className="text-2xl font-bold mb-1 text-cyan-950">Admin login</h1>
+        <p className="text-sm text-gray-600 mb-4">For the owner of Jyoti Loops.</p>
 
-       <input
-  type="email"
-  placeholder="Email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  className="w-full p-2 mb-3 border rounded text-gray-900 font-semibold"
-/>
+        {error && (
+          <p className="text-rose-700 text-sm mb-3" role="alert">
+            {error}
+          </p>
+        )}
 
-<input
-  type="password"
-  placeholder="Password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  className="w-full p-2 mb-4 border rounded text-gray-900 font-semibold"
-/>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-cyan-950 mb-1">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 border rounded-md text-cyan-950 placeholder:text-gray-500"
+            />
+          </div>
 
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-cyan-950 mb-1">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              placeholder="Your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 border rounded-md text-cyan-950 placeholder:text-gray-500"
+            />
+          </div>
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-cyan-700 text-white py-2 rounded hover:bg-cyan-800"
-        >
-          Log In
-        </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full bg-cyan-700 text-white py-2 rounded-md hover:bg-cyan-800 active:bg-cyan-900 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {submitting ? 'Logging in…' : 'Log in'}
+          </button>
+        </form>
       </div>
-    </div>
+    </main>
   );
 }

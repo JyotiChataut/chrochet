@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Caveat } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -7,14 +7,19 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const caveat = Caveat({
+  variable: "--font-caveat",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Jyoti Loops",
-  description: "Loop happiness",
+  title: {
+    default: "Jyoti Loops",
+    template: "%s · Jyoti Loops",
+  },
+  description: "Loop happiness. A personal journal of crochet and code.",
 };
 
 export default function RootLayout({
@@ -24,9 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${caveat.variable} antialiased`}>
         {children}
       </body>
     </html>

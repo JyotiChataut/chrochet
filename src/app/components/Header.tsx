@@ -26,38 +26,38 @@ function Header() {
   ];
 
   return (
-    <nav className="bg-cyan-950 border-b border-[#333] sticky top-0 z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+    <nav className="bg-cyan-950 sticky top-0 z-50 border-b border-cyan-800">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">
+        <Link href="/" className="flex items-center gap-3">
+          <span className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
             <Image
-              src="/assets/nft-logo.jpg"
-              alt="nft Logo"
+              src="/assets/jyoti-loops-logo.jpg"
+              alt=""
               width={32}
               height={32}
               className="h-8 w-auto"
             />
-          </div>
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white italic font-[cursive]">
+          </span>
+          <span className="text-2xl font-semibold whitespace-nowrap font-caveat text-cyan-50">
             <span className="text-cyan-400">Jyoti</span>-Loops
           </span>
         </Link>
 
-        {/* Hamburger button */}
         <button
           onClick={() => setMenuOpen((prev) => !prev)}
           type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-expanded={menuOpen}
+          aria-controls="main-nav"
+          className="inline-flex items-center justify-center w-11 h-11 text-cyan-100 rounded-lg md:hidden hover:bg-cyan-900"
         >
-          <span className="sr-only">Open main menu</span>
-          <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <span className="sr-only">{menuOpen ? 'Close main menu' : 'Open main menu'}</span>
+          <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14" aria-hidden="true">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M1 1h15M1 7h15M1 13h15" />
           </svg>
         </button>
 
-        {/* Navigation links */}
-        <div className={`${menuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-b-cyan-950 rounded-lg bg-cyan-950 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-cyan-950">
+        <div id="main-nav" className={`${menuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`}>
+          <ul className="flex flex-col p-4 mt-3 gap-1 rounded-lg bg-cyan-900 md:flex-row md:p-0 md:mt-0 md:gap-2 md:bg-transparent">
             {navLinks.map(({ label, href }) => {
               const isActive = pathname === href;
               return (
@@ -65,10 +65,11 @@ function Header() {
                   <Link
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block py-2 px-3 rounded-sm md:p-0 ${
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`block py-2 px-3 rounded-md text-sm font-medium md:text-base ${
                       isActive
-                        ? 'text-cyan-700 font-semibold'
-                        : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#0033A0] dark:text-white md:dark:hover:text-[#0033A0] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        ? 'text-white bg-cyan-800 md:bg-transparent md:text-cyan-300'
+                        : 'text-cyan-100 hover:bg-cyan-800 md:hover:bg-transparent md:hover:text-white'
                     }`}
                   >
                     {label}
@@ -86,7 +87,7 @@ function Header() {
                     setMenuOpen(false);
                     window.location.href = '/';
                   }}
-                  className="block w-full text-left py-2 px-3 rounded-sm text-red-500 hover:text-red-700 md:p-0"
+                  className="block w-full text-left py-2 px-3 rounded-md text-sm font-medium text-rose-300 hover:text-rose-200 hover:bg-cyan-800 md:hover:bg-transparent"
                 >
                   Logout
                 </button>
