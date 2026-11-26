@@ -3,8 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+type Feedback = {
+  _id: string;
+  message: string;
+  fileName: string | null;
+  createdAt: string;
+};
+
 export default function AdminDashboard() {
-  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -37,7 +44,7 @@ export default function AdminDashboard() {
         // Handle response whether it's { feedbacks: [] } or just []
         setFeedbacks(data.feedbacks || data);
         setLoading(false);
-      } catch (err) {
+      } catch {
         setError('Something went wrong');
         setLoading(false);
       }
@@ -58,7 +65,7 @@ export default function AdminDashboard() {
         <p className="text-cyan-700">No feedback yet.</p>
       ) : (
         <ul className="space-y-4">
-          {feedbacks.map((fb: any) => (
+          {feedbacks.map((fb: Feedback) => (
             <li
               key={fb._id}
               className="bg-white p-4 rounded-xl shadow border border-cyan-200"

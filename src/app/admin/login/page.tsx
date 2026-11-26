@@ -26,7 +26,7 @@ export default function AdminLogin() {
 
       localStorage.setItem('adminToken', data.token);
       router.push('/admin/dashboard');
-    } catch (err) {
+    } catch {
       setError('Something went wrong');
     }
   };
