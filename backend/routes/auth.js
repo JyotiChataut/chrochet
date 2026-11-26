@@ -5,22 +5,6 @@ import User from "../models/User.js";
 
 const router = Router();
 
-router.post("/create-admin", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ msg: "Admin already exists" });
-
-    const hashed = await bcrypt.hash(password, 10);
-    await User.create({ email, password: hashed, isAdmin: true });
-
-    res.status(201).json({ msg: "Admin created successfully" });
-  } catch (err) {
-    res.status(500).json({ msg: "Server error while creating admin" });
-  }
-});
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
