@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 dotenv.config();
@@ -12,7 +13,24 @@ import adminRoutes from "./routes/admin.js";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
+
+if (process.env.SITE_ORIGIN) {
+  allowedOrigins.push(process.env.SITE_ORIGIN);
+}
+
+app.use(helmet());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+  }),
+);
 app.use(express.json());
 
 const loginLimiter = rateLimit({
