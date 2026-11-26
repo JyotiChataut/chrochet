@@ -7,10 +7,13 @@ const feedbackSchema = new Schema(
     message: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 5000,
     },
     fileName: {
       type: String,
       default: null,
+      maxlength: 255,
     },
   },
   {
